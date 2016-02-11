@@ -55,7 +55,7 @@ server.route({
 					group: obj
 				});
 			});
-		}
+	}
 });
 
 
@@ -75,9 +75,15 @@ server.route({
 // add a track
 server.route({
 	method: "POST",
-	path: "/groups{id}/tracks",
+	path: "/groups/{id}/tracks",
 	handler: function(request, reply) {
-			return reply({info: "Hello"});
+		Groups.findOne({
+			id: request.params.id
+		}).then(
+			function(group) {
+				group.addTrack(request.payload.track_id, request.payload.user_id)
+					.then(reply().code(201));
+			});
 	}
 });
 

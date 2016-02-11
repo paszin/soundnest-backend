@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
+var AutoIncrement = require("mongoose-sequence");
 
 var groupsSchema = new mongoose.Schema({
 	name: String,
@@ -22,6 +23,8 @@ var groupsSchema = new mongoose.Schema({
 	id: true
 });
 
+groupsSchema.plugin(AutoIncrement, {inc_field: "id"});
+
 
 // add a new group
 groupsSchema.statics.add = function (name, description, added_by) {
@@ -36,20 +39,9 @@ groupsSchema.statics.add = function (name, description, added_by) {
 	return myGroup.save();
 };
 
-groupsSchema.statics.findByIdAndAddTrack = function(group_id, track_id, added_by_id) {
-	return Group.findByIdAndUpdate(
-		group_id, {
-			$push: {
-				"tracks": {
-					id: track_id,
-					added_by_id: added_by_id
-				}
-			}
-		}, {
-			safe: true,
-			upsert: true
-		}
-	);
+groupsSchema.methods.addTrack = function(track_id, added_by_id) {
+	this.tracks.push({id: track_id, added_by_id: added_by_id});
+	return this.save();
 };
 
 
