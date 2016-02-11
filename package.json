@@ -1,0 +1,15 @@
+{
+  "name": "soundback",
+  "version": "0.0.1",
+  "description": "backend for soundcloud mashup",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "paszin",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "^13.0.0",
+    "mongoose": "^4.4.2"
+  }
+}
