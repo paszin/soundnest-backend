@@ -1,9 +1,15 @@
 var mongoose = require("mongoose");
+var async = require("async");
 var Groups = require("./models/groups.js");
+var SC = require("node-soundcloud");
 mongoose.connect("mongodb://localhost/soundnest");
 var db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
+
+SC.init({
+  id: '8cc5ee91d9e6015109dc93302c43e99c'
+});
 
 
 const Hapi = require("hapi");
@@ -59,16 +65,36 @@ server.route({
 });
 
 
-// get group details (TODO: including all track information)
+// get tracklist
 server.route({
 	method: "GET",
-	path: "/groups/{id}",
+	path: "/groups/{id}/tracks",
 	handler: function(request, reply) {
-		Groups.findById(id, function(err, group) {
-			return reply({
-				group: group
+
+
+		function callback(err, transformed) {
+			if (err) {
+				console.log("error at iteratee callback", err);
+			}
+		}
+
+		Groups.findOne({
+			id: request.params.id
+		}).then(
+			function(group) {
+				var tracks = group.tracks;
+				async.map(group.tracks,
+					function(item, callback) {
+						SC.get("/tracks/"+item.id, callback);
+					},
+					function(err, result) {
+						console.log(err);
+						reply({
+							tracks: result
+						});
+					}
+				);
 			});
-		});
 	}
 });
 

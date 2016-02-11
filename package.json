@@ -9,8 +9,11 @@
   "author": "paszin",
   "license": "MIT",
   "dependencies": {
+    "async": "^1.5.2",
     "hapi": "^13.0.0",
     "mongoose": "^4.4.2",
-    "mongoose-sequence": "^1.0.0"
+    "mongoose-sequence": "^1.0.0",
+    "node-soundcloud": "0.0.4",
+    "request": "^2.69.0"
   }
 }
