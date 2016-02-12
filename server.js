@@ -119,16 +119,18 @@ server.route({
 	method: "POST",
 	path: "/groups/{gid}/tracks/{tid}/comments",
 	handler: function(request, reply) {
-		Groups.findOne({
-			id: request.params.gid
-		}).then(function(group) {
-			console.log("group");
-			group.addComment(request.params.tid, 0, "comment").then(
-				function (group) {
-				console.log("save comment", group);
-				reply();
+		Groups.update({
+			"id": request.params.gid,
+			"tracks.id": request.params.tid
+		}, {
+			"$push": {
+				"tracks.$.comments": {
+					"text": request.payload.text,
+					"author_id": request.payload.user_id
 				}
-				);
+			}
+		}).then(function(group) {
+			reply().code(201);
 		});
 	}
 });

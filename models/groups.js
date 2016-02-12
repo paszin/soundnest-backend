@@ -30,7 +30,6 @@ groupsSchema.plugin(AutoIncrement, {
 
 // add a new group
 groupsSchema.statics.add = function(name, description, added_by) {
-
 	var myGroup = new this({
 		name: name,
 		description: description
@@ -38,6 +37,7 @@ groupsSchema.statics.add = function(name, description, added_by) {
 	myGroup.members.push({
 		id: added_by
 	});
+	console.log(myGroup);
 	return myGroup.save();
 };
 
