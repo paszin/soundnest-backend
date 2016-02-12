@@ -8,7 +8,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
 SC.init({
-  id: '8cc5ee91d9e6015109dc93302c43e99c'
+	id: '8cc5ee91d9e6015109dc93302c43e99c'
 });
 
 
@@ -56,10 +56,10 @@ server.route({
 	path: "/groups",
 	handler: function(request, reply) {
 		Groups.add(request.payload.name, request.payload.description, request.payload.user_id)
-			.then(function(err, obj) {
-				return reply({
+			.then(function(obj) {
+				reply({
 					group: obj
-				});
+				}).code(201);
 			});
 	}
 });
@@ -85,7 +85,7 @@ server.route({
 				var tracks = group.tracks;
 				async.map(group.tracks,
 					function(item, callback) {
-						SC.get("/tracks/"+item.id, callback);
+						SC.get("/tracks/" + item.id, callback);
 					},
 					function(err, result) {
 						console.log(err);
@@ -110,6 +110,26 @@ server.route({
 				group.addTrack(request.payload.track_id, request.payload.user_id)
 					.then(reply().code(201));
 			});
+	}
+});
+
+
+//add a comment
+server.route({
+	method: "POST",
+	path: "/groups/{gid}/tracks/{tid}/comments",
+	handler: function(request, reply) {
+		Groups.findOne({
+			id: request.params.gid
+		}).then(function(group) {
+			console.log("group");
+			group.addComment(request.params.tid, 0, "comment").then(
+				function (group) {
+				console.log("save comment", group);
+				reply();
+				}
+				);
+		});
 	}
 });
 

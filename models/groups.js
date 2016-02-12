@@ -23,11 +23,13 @@ var groupsSchema = new mongoose.Schema({
 	id: true
 });
 
-groupsSchema.plugin(AutoIncrement, {inc_field: "id"});
+groupsSchema.plugin(AutoIncrement, {
+	inc_field: "id"
+});
 
 
 // add a new group
-groupsSchema.statics.add = function (name, description, added_by) {
+groupsSchema.statics.add = function(name, description, added_by) {
 
 	var myGroup = new this({
 		name: name,
@@ -40,8 +42,16 @@ groupsSchema.statics.add = function (name, description, added_by) {
 };
 
 groupsSchema.methods.addTrack = function(track_id, added_by_id) {
-	this.tracks.push({id: track_id, added_by_id: added_by_id});
+	this.tracks.push({
+		id: track_id,
+		added_by_id: added_by_id
+	});
 	return this.save();
+};
+
+
+groupsSchema.methods.addComment = function(track_id, author_id, comment) {
+	//todo return this.update()
 };
 
 
