@@ -8,7 +8,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
 SC.init({
-	id: '8cc5ee91d9e6015109dc93302c43e99c'
+	id: "8cc5ee91d9e6015109dc93302c43e99c"
 });
 
 
@@ -71,13 +71,6 @@ server.route({
 	path: "/groups/{id}/tracks",
 	handler: function(request, reply) {
 
-
-		function callback(err, transformed) {
-			if (err) {
-				console.log("error at iteratee callback", err);
-			}
-		}
-
 		Groups.findOne({
 			id: request.params.id
 		}).then(
@@ -85,7 +78,10 @@ server.route({
 				var tracks = group.tracks;
 				async.map(group.tracks,
 					function(item, callback) {
-						SC.get("/tracks/" + item.id, callback);
+						SC.get("/tracks/" + item.id, function merge(err, track) {
+							console.log("response from sc", err, track);
+							callback(err, {sc: track, sn: item});
+						});
 					},
 					function(err, result) {
 						console.log(err);
