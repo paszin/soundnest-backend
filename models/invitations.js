@@ -7,7 +7,8 @@ var invitationsSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	added_by_name: String
+	added_by_name: String,
+	group_id: Number
 });
 
 

@@ -107,6 +107,24 @@ server.route({
 	}
 });
 
+server.route({
+	method: "POST",
+	path: "/invitation/{iid}",
+	handler: function(request, reply) {
+		Invitations.findOne({
+			id: request.params.iid
+		}).then(
+			function(invitation) {
+				return Groups.findOne({
+					id: request.params.id
+				});
+			}).then(
+			function(group) {
+				return group.addMember(request.payload.user_id);
+			}).then(
+			reply().code(201));
+	}
+});
 
 //add a comment
 server.route({
@@ -147,9 +165,7 @@ server.route({
 		}).then(
 			function(result) {
 				console.log(result);
-				reply({
-					id: result ? result.id: null
-				});
+				reply(result);
 			});
 	}
 });
