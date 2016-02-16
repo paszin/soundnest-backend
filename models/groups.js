@@ -41,6 +41,13 @@ groupsSchema.statics.add = function(name, description, added_by) {
 	return myGroup.save();
 };
 
+
+
+groupsSchema.static.show = function(user_id) {
+	return this.find({"members.id": user_id});
+};
+
+
 groupsSchema.methods.addTrack = function(track_id, added_by_id) {
 	this.tracks.push({
 		id: track_id,
@@ -49,10 +56,18 @@ groupsSchema.methods.addTrack = function(track_id, added_by_id) {
 	return this.save();
 };
 
+groupsSchema.methods.addMember = function(user_id) {
+	this.members.push({
+		id: user_id
+	});
+	return this.save();
+};
+
 
 groupsSchema.methods.addComment = function(track_id, author_id, comment) {
 	//todo return this.update()
 };
+
 
 
 mongoose.model("Groups", groupsSchema);

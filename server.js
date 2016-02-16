@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var async = require("async");
 var Groups = require("./models/groups.js");
+var Invitations = require("./models/invitations.js");
 var SC = require("node-soundcloud");
 mongoose.connect("mongodb://localhost/soundnest");
 var db = mongoose.connection;
@@ -71,13 +72,6 @@ server.route({
 	path: "/groups/{id}/tracks",
 	handler: function(request, reply) {
 
-
-		function callback(err, transformed) {
-			if (err) {
-				console.log("error at iteratee callback", err);
-			}
-		}
-
 		Groups.findOne({
 			id: request.params.id
 		}).then(
@@ -132,6 +126,47 @@ server.route({
 		}).then(function(group) {
 			reply().code(201);
 		});
+	}
+});
+
+server.route({
+	method: "POST",
+	path: "/groups/{gid}/members",
+	handler: function(request, reply) {
+		Groups.addMember(request.payload.user_id);
+	}
+});
+
+
+server.route({
+	method: "GET",
+	path: "/invitations",
+	handler: function(request, reply) {
+		Invitations.findOne({
+			code: request.query.code
+		}).then(
+			function(result) {
+				console.log(result);
+				reply({
+					id: result ? result.id: null
+				});
+			});
+	}
+});
+
+server.route({
+	method: "POST",
+	path: "/invitations",
+	handler: function(request, reply) {
+		Invitations.create({
+			code: request.payload.code,
+			message: request.payload.message,
+			added_by_name: request.payload.username
+		}).then(
+			function(result) {
+				console.log(result);
+				reply().code(201);
+			});
 	}
 });
 
