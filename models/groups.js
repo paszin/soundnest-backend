@@ -37,7 +37,6 @@ groupsSchema.statics.add = function(name, description, added_by) {
 	myGroup.members.push({
 		id: added_by
 	});
-	console.log(myGroup);
 	return myGroup.save();
 };
 
