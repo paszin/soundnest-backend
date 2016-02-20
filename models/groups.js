@@ -47,10 +47,15 @@ groupsSchema.static.show = function(user_id) {
 };
 
 
-groupsSchema.methods.addTrack = function(track_id, added_by_id) {
+groupsSchema.methods.addTrack = function(track_id, added_by_id, comment) {
+	var comments = [];
+	if (comment) {
+		comments = [{text: comment, author_id: added_by_id}];
+	}
 	this.tracks.push({
 		id: track_id,
-		added_by_id: added_by_id
+		added_by_id: added_by_id,
+		comments: comments
 	});
 	return this.save();
 };

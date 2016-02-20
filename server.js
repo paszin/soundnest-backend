@@ -80,7 +80,7 @@ server.route({
 				async.map(group.tracks,
 					function(item, callback) {
 						SC.get("/tracks/" + item.id, function merge(err, track) {
-							console.log("response from sc", err, track);
+							//console.log("response from sc", err, track);
 							callback(err, {sc: track, sn: item});
 						});
 					},
@@ -104,7 +104,7 @@ server.route({
 			id: request.params.id
 		}).then(
 			function(group) {
-				group.addTrack(request.payload.track_id, request.payload.user_id)
+				group.addTrack(request.payload.track_id, request.payload.user_id, request.payload.comment)
 					.then(reply().code(201));
 			});
 	}
