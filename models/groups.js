@@ -16,7 +16,11 @@ var groupsSchema = new mongoose.Schema({
 		added_by_id: Number,
 		comments: [{
 			text: String,
-			author_id: Number
+			author_id: Number,
+			added_at: {
+				type: Date,
+				default: Date.now
+			}
 		}]
 	}]
 }, {
@@ -43,14 +47,19 @@ groupsSchema.statics.add = function(name, description, added_by) {
 
 
 groupsSchema.static.show = function(user_id) {
-	return this.find({"members.id": user_id});
+	return this.find({
+		"members.id": user_id
+	});
 };
 
 
 groupsSchema.methods.addTrack = function(track_id, added_by_id, comment) {
 	var comments = [];
 	if (comment) {
-		comments = [{text: comment, author_id: added_by_id}];
+		comments = [{
+			text: comment,
+			author_id: added_by_id
+		}];
 	}
 	this.tracks.push({
 		id: track_id,

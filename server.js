@@ -76,16 +76,16 @@ server.route({
 			id: request.params.id
 		}).then(
 			function(group) {
-				var tracks = group.tracks;
 				async.map(group.tracks,
 					function(item, callback) {
 						SC.get("/tracks/" + item.id, function merge(err, track) {
-							//console.log("response from sc", err, track);
-							callback(err, {sc: track, sn: item});
+							callback(err, {
+								sc: track,
+								sn: item
+							});
 						});
 					},
 					function(err, result) {
-						console.log(err);
 						reply({
 							tracks: result
 						});
@@ -94,6 +94,7 @@ server.route({
 			});
 	}
 });
+
 
 // add a track
 server.route({
@@ -109,6 +110,47 @@ server.route({
 			});
 	}
 });
+
+server.route({
+	method: "GET",
+	path: "/groups/{id}/members",
+	handler: function(request, reply) {
+		//add avatar and name to members
+		Groups.findOne({
+			id: request.params.id
+		}).then(
+			function(group) {
+				async.map(group.members,
+					function(member, callback) {
+						SC.get("/users/" + member.id,
+							function sccallback(err, user) {
+								callback(err, {sn: member, sc: user});
+							});
+					},
+					function (err, result) {
+						reply({members: result});
+					});
+			}
+		);
+	}
+});
+
+
+/*
+async.map(group.members, (member) => SC.get("/users/" + member.id,
+						function(err, user) {
+							callback(err, {
+								sn: member,
+								sc: user
+							});
+						}),
+					function(err, result) {
+						reply({
+							members: result
+						});
+					});
+			})
+	}*/
 
 server.route({
 	method: "POST",
