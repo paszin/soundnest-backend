@@ -43,11 +43,14 @@ server.route({
 	method: "GET",
 	path: "/groups",
 	handler: function(request, reply) {
-		Groups.find(function(err, groups) {
-			return reply({
-				groups: groups
+		Groups.find({
+			"members.id": request.query.user_id
+		}).then(
+			function(groups) {
+				return reply({
+					groups: groups
+				});
 			});
-		});
 	}
 });
 
@@ -124,52 +127,22 @@ server.route({
 					function(member, callback) {
 						SC.get("/users/" + member.id,
 							function sccallback(err, user) {
-								callback(err, {sn: member, sc: user});
+								callback(err, {
+									sn: member,
+									sc: user
+								});
 							});
 					},
-					function (err, result) {
-						reply({members: result});
+					function(err, result) {
+						reply({
+							members: result
+						});
 					});
 			}
 		);
 	}
 });
 
-
-/*
-async.map(group.members, (member) => SC.get("/users/" + member.id,
-						function(err, user) {
-							callback(err, {
-								sn: member,
-								sc: user
-							});
-						}),
-					function(err, result) {
-						reply({
-							members: result
-						});
-					});
-			})
-	}*/
-
-server.route({
-	method: "POST",
-	path: "/invitation/{iid}",
-	handler: function(request, reply) {
-		Invitations.findOne({
-			id: request.params.iid
-		}).then(
-			function(invitation) {
-				return Groups.findOne({
-					id: request.params.id
-				});
-			}).then(
-			function(group) {
-				return group.addMember(request.payload.user_id);
-			}).then(
-			reply().code(201));
-	}
-});
 
 //add a comment
 server.route({
@@ -196,7 +169,12 @@ server.route({
 	method: "POST",
 	path: "/groups/{gid}/members",
 	handler: function(request, reply) {
-		Groups.addMember(request.payload.user_id);
+		Groups.findOne({
+				id: request.query.gid
+			}).then(function(group) {
+				return group.addMember(request.payload.user_id);
+			})
+			.then(reply().code(201));
 	}
 });
 
@@ -206,12 +184,33 @@ server.route({
 	path: "/invitations",
 	handler: function(request, reply) {
 		Invitations.findOne({
-			code: request.query.code
-		}).then(
-			function(result) {
-				console.log(result);
-				reply(result);
-			});
+				code: request.query.code
+			})
+			.then(
+				function(invitation) {
+					return Groups.findOne({
+						id: invitation.group_id
+					});
+				})
+			.then(
+				function(group) {
+					if (_.find(group.members, {
+							id: request.query.user_id
+						})) {
+						reply().code(200);
+					} else {
+						return {
+							group: group,
+							resp: group.addMember(request.query.user_id)
+						};
+					}
+				})
+			.then(
+				function(data) {
+					reply({
+						group: data.group
+					}).code(201);
+				});
 	}
 });
 
@@ -222,10 +221,10 @@ server.route({
 		Invitations.create({
 			code: request.payload.code,
 			message: request.payload.message,
-			added_by_name: request.payload.username
+			added_by_name: request.payload.username,
+			group_id: request.payload.group_id
 		}).then(
 			function(result) {
-				console.log(result);
 				reply().code(201);
 			});
 	}
