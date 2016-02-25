@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "backend for soundcloud mashup",
   "main": "server.js",
+  "engines" : { "node" : ">=4.0.0" },
   "scripts": {
-    "test": "mocha --timeout 5000 --reporter mocha-istanbul test",
+    "test": "mocha --timeout 5000 --reporter nyan test",
     "start": "node server.js"
   },
   "author": "paszin",
