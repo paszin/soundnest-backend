@@ -26,16 +26,14 @@ server.connection({
 });
 
 
-// template
-/*
 server.route({
 	method: "GET",
-	path: "/groups",
+	path: "/",
 	handler: function(request, reply) {
-			return reply({info: "Hello"});
+		return reply("hello world");
 	}
 });
-*/
+
 
 
 //all groups
@@ -233,10 +231,18 @@ server.route({
 
 
 // Start server
-server.start((err) => {
+function startServer() {
+	server.start((err) => {
 
-	if (err) {
-		throw err;
-	}
-	console.log("Server running at:", server.info.uri);
-});
+		if (err) {
+			throw err;
+		}
+		console.log("Server running at:", server.info.uri);
+	});
+
+}
+
+module.exports = {
+	server: server,
+	startServer: startServer
+};

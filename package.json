@@ -4,7 +4,7 @@
   "description": "backend for soundcloud mashup",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 5000 --reporter nyan test",
+    "test": "mocha --timeout 5000 --reporter mocha-istanbul test",
     "start": "node server.js"
   },
   "author": "paszin",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "mocha-istanbul": "^0.2.0"
   }
 }
