@@ -4,16 +4,22 @@
   "description": "backend for soundcloud mashup",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --timeout 5000 --reporter nyan test",
+    "start": "node server.js"
   },
   "author": "paszin",
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.2",
     "hapi": "^13.0.0",
+    "lodash": "^4.5.1",
     "mongoose": "^4.4.2",
     "mongoose-sequence": "^1.0.0",
-    "node-soundcloud": "0.0.4",
+    "node-soundcloud": "0.0.5",
     "request": "^2.69.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }
