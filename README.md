@@ -11,3 +11,5 @@ Node.js + Hapi.js and MongoDB Backend for my Soundcloud-App.
 
 Frontend: https://github.com/paszin/soundcloudfire
 
+For issues check: https://waffle.io/paszin/soundcloudfire
+
