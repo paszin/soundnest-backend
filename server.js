@@ -1,13 +1,12 @@
 var mongoose = require("mongoose");
 var async = require("async");
+var SC = require("node-soundcloud");
+
+var db;
 var Groups = require("./models/groups.js");
 var History = require("./models/history.js");
 var Invitations = require("./models/invitations.js");
-var SC = require("node-soundcloud");
-mongoose.connect("mongodb://localhost/soundnest");
-var db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "connection error:"));
 
 SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
@@ -29,7 +28,12 @@ server.connection({
 
 
 // Start server
-function startServer() {
+function startServer(database, options) {
+	mongoose.connect("mongodb://localhost/" + database, options);
+	db = mongoose.connection;
+
+	db.on("error", console.error.bind(console, "connection error:"));
+
 	server.start((err) => {
 
 		if (err) {
