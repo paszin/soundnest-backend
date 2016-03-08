@@ -288,5 +288,7 @@ server.route({
 
 module.exports = {
 	server: server,
-	startServer: startServer
+	startServer: startServer,
+	db: db,
+	Groups: Groups
 };

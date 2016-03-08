@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "mocha --timeout 5000 --reporter nyan test",
-    "start": "node start_server.js",
-    "local": "nodemon start_server.js"
+    "start": "node start_server.js prod",
+    "dev": "nodemon start_server.js dev"
   },
   "author": "paszin",
   "license": "MIT",
