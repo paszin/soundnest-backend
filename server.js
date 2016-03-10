@@ -29,7 +29,7 @@ server.connection({
 
 // Start server
 function startServer(database, options) {
-	mongoose.connect("mongodb://localhost/" + database, options);
+	mongoose.connect("mongodb://localhost/" + database); //, options);
 	db = mongoose.connection;
 
 	db.on("error", console.error.bind(console, "connection error:"));
@@ -70,6 +70,8 @@ server.route({
 			});
 	}
 });
+
+
 
 // add new group
 server.route({
@@ -201,35 +203,24 @@ server.route({
 	path: "/invitations",
 	handler: function(request, reply) {
 		Invitations.findOne({
-				code: request.query.code
-			})
-			.then(
-				function(invitation) {
-					return Groups.findOne({
+			code: request.query.code
+		}).then(
+			function(invitation) {
+				console.log("1: invitation group id", invitation.group_id);
+				return Groups.findOne({
 						id: invitation.group_id
 					});
-				})
-			.then(
-				function(group) {
-					if (_.find(group.members, {
-							id: request.query.user_id
-						})) {
-						reply().code(200);
-					} else {
-						return {
-							group: group,
-							resp: group.addMember(request.query.user_id)
-						};
-					}
-				})
-			.then(
-				function(data) {
-					reply({
-						group: data.group
-					}).code(201);
-				});
+			}).then(function(group) {
+				console.log("2");
+				return group.addMember(request.query.user_id);
+			}).then(
+			function(group) {
+				console.log("3");
+				return reply({group: group}).code(201);
+			});
 	}
 });
+
 
 server.route({
 	method: "POST",
@@ -287,8 +278,9 @@ server.route({
 
 
 module.exports = {
-	server: server,
-	startServer: startServer,
-	db: db,
-	Groups: Groups
+	server,
+	startServer,
+	db,
+	Groups,
+	Invitations
 };
