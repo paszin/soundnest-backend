@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var async = require("async");
 var SC = require("node-soundcloud");
-
+var Joi = require('joi');
 var db;
 var Groups = require("./models/groups.js");
 var History = require("./models/history.js");
@@ -235,6 +235,16 @@ server.route({
 			function(result) {
 				reply().code(201);
 			});
+	},
+	config: {
+		validate: {
+			payload: {
+				code: Joi.string(),
+				message: Joi.string(),
+				username: Joi.string(),
+				group_id: Joi.number().required()
+			}
+		}
 	}
 });
 
