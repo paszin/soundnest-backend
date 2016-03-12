@@ -1,3 +1,4 @@
+var async = require("async");
 var SC = require("node-soundcloud");
 SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
@@ -131,7 +132,7 @@ exports.register = function(server, options, next) {
 					}
 				}
 			}).then(function(group) {
-				reply().code(201);
+				reply({group: group});
 			});
 		}
 	});

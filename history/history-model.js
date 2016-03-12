@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-var AutoIncrement = require("mongoose-sequence");
 
 var historySchema = new mongoose.Schema({
 	user_id: Number,

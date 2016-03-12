@@ -1,5 +1,5 @@
 
-var Joi = require('joi');
+var Joi = require("joi");
 
 
 exports.register = function(server, options, next) {
@@ -41,7 +41,7 @@ server.route({
 			added_by_name: request.payload.username,
 			group_id: request.payload.group_id
 		}).then(
-			function(result) {
+			function() {
 				reply().code(201);
 			});
 	},

@@ -1,8 +1,5 @@
 var mongoose = require("mongoose");
-var async = require("async");
-
 var db;
-var History = require("./history/history-model.js");
 
 
 
@@ -29,7 +26,8 @@ function startServer(database, options) {
 
 	server.register([
 		require("./groups/groups-routes"),
-		require("./invitations/invitations-routes")
+		require("./invitations/invitations-routes"),
+		require("./history/history-routes")
 	], (err) => {
 
 		if (err) {
@@ -55,43 +53,6 @@ server.route({
 
 
 
-
-
-server.route({
-	method: "GET",
-	path: "/history",
-	handler: function(request, reply) {
-		History.find({
-			"user_id": request.query.user_id
-		}).then(function(tracks) {
-			async.map(tracks,
-				function(item, callback) {
-					SC.get("/tracks/" + item.track_id, function merge(err, track) {
-						callback(err, {
-							sc: track,
-							sn: item
-						});
-					});
-				},
-				function(err, result) {
-					reply({
-						tracks: result
-					});
-				}
-			);
-		});
-	}
-});
-
-server.route({
-	method: "POST",
-	path: "/history",
-	handler: function(request, reply) {
-		History.add(request.payload.user_id, request.payload.track_id, request.payload.statistics, 1).then(function(result) {
-			reply().code(201);
-		});
-	}
-});
 
 
 module.exports = {

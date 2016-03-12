@@ -2,14 +2,12 @@ var SC = require("node-soundcloud");
 SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
 });
-
+var async = require("async");
 
 
 exports.register = function(server, options, next) {
 
-	const Groups = require("../groups/groups-model.js");
-	const Invitations = require("./history-model.js");
-
+	const History = require("./history-model.js");
 
 	server.route({
 		method: "GET",
