@@ -77,11 +77,6 @@ groupsSchema.methods.addMember = function(user_id) {
 };
 
 
-groupsSchema.methods.addComment = function(track_id, author_id, comment) {
-	//todo return this.update()
-};
-
-
 
 mongoose.model("Groups", groupsSchema);
 

@@ -2,15 +2,8 @@
 var expect = require("chai").expect;
 var server = require("../server.js");
 server.startServer("soundnest-test");
-
-describe("A test suite", function() {
-	beforeEach(function() {});
-	afterEach(function() {});
-	it("should work", function() {
-		expect(true).to.be.true;
-		expect(100).to.equal(100);
-	});
-});
+var Groups = require("../groups/groups-model.js");
+var Invitations = require("../invitations/invitations-model.js");
 
 
 describe("Basics", function() {
@@ -33,7 +26,7 @@ describe("create groups", function() {
 	options.url = "/groups";
 
 	before(function() {
-		server.Groups.remove(function() {});
+		Groups.remove(function() {});
 	});
 
 	it("should create a new group", function(done) {
@@ -74,16 +67,15 @@ describe("Invitation", function() {
 	var newgroup = {};
 
 	before(function(done) {
-		server.Invitations.remove(function() {});
-		server.Groups.remove(function() {});
-		server.Groups.add("Group 1", "describe this group", 100).then(function(group) {
+		Invitations.remove(function() {});
+		Groups.remove(function() {});
+		Groups.add("Group 1", "describe this group", 100).then(function(group) {
 			newgroup.id = group.id;
 			done();
 		});
 	});
 
 	it("should add a new invitation", function(done) {
-		console.log("new group in test 1", newgroup);
 		options.method = "POST";
 		options.payload = {
 			code: "code123",
@@ -99,7 +91,7 @@ describe("Invitation", function() {
 	});
 
 	it("should appear in the database", function(done) {
-		server.Invitations.find({}).then(function(invitations) {
+		Invitations.find({}).then(function(invitations) {
 			expect(invitations).to.be.a("array").with.length(1);
 			expect(invitations[0]).to.have.property("code", "code123");
 			expect(invitations[0]).to.have.property("added_by_name", "User1");
