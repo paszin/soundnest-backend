@@ -9,7 +9,9 @@
   "scripts": {
     "test": "mocha --timeout 5000 --reporter nyan test",
     "start": "node start_server.js prod",
-    "dev": "nodemon start_server.js dev"
+    "dev": "nodemon start_server.js dev",
+    "coverage":  "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0"
+
   },
   "author": "paszin",
   "license": "MIT",
