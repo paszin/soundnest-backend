@@ -206,16 +206,13 @@ server.route({
 			code: request.query.code
 		}).then(
 			function(invitation) {
-				console.log("1: invitation group id", invitation.group_id);
 				return Groups.findOne({
 					id: invitation.group_id
 				});
 			}).then(function(group) {
-			console.log("2");
 			return group.addMember(request.query.user_id);
 		}).then(
 			function(group) {
-				console.log("3");
 				return reply({
 					group: group
 				}).code(201);

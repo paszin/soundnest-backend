@@ -68,7 +68,7 @@ describe("create groups", function() {
 
 
 
-describe.only("Invitation", function() {
+describe("Invitation", function() {
 	var options = {};
 	options.url = "/invitations";
 	var newgroup = {};
@@ -78,7 +78,6 @@ describe.only("Invitation", function() {
 		server.Groups.remove(function() {});
 		server.Groups.add("Group 1", "describe this group", 100).then(function(group) {
 			newgroup.id = group.id;
-			console.log("Group id is", newgroup);
 			done();
 		});
 	});
@@ -92,7 +91,6 @@ describe.only("Invitation", function() {
 			username: "User1",
 			group_id: newgroup.id
 		};
-		console.log("payload", options.payload.group_id);
 		server.server.inject(options, function(response) {
 			expect(response.statusCode).to.equal(201);
 			expect(response.result).to.be.null;
@@ -107,9 +105,6 @@ describe.only("Invitation", function() {
 			expect(invitations[0]).to.have.property("added_by_name", "User1");
 			expect(invitations[0]).to.have.property("message", "welcome to group 1");
 			expect(invitations[0]).to.have.property("group_id");
-			console.log("new group", newgroup);
-			console.log("invitation", invitations);
-
 			done();
 		});
 	});
@@ -118,14 +113,11 @@ describe.only("Invitation", function() {
 		options.method = "GET";
 		options.url += "?code=code123&user_id=200";
 		options.payload = null;
-		console.log(newgroup.id);
 		server.server.inject(options, function(response) {
-			//expect(response.statusCode).to.equal(201);
-			//expect(response.result).to.have.property("group");
+			expect(response.statusCode).to.equal(201);
+			expect(response.result).to.have.property("group");
 			done();
 		});
-		//done();
-
 	});
 
 
