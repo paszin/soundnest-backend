@@ -112,6 +112,14 @@ describe("Invitation", function() {
 		});
 	});
 
+	it("sould be member of the new group", function(done) {
+		Groups.find({"members.id": 200}).then(function(groups) {
+			expect(groups).to.be.a("array").with.length(1);
+			expect(groups[0]).to.have.property("id", newgroup.id);
+			done();
+		});
+	})
+
 
 
 });
