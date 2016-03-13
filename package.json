@@ -7,21 +7,22 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "test": "mocha --timeout 5000 --reporter nyan test",
-    "start": "node start_server.js prod",
+    "test": "mocha --timeout 3000 --reporter nyan test",
+    "start": "nodemon start_server.js",
     "dev": "nodemon start_server.js dev",
-    "coverage":  "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0"
+    "coverage-serve":  "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
+    "coverage":  "istanbul --include-all-sources cover _mocha -- -R spec",
+    "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter test"
+
 
   },
   "author": "paszin",
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.2",
-    "codacy-coverage": "^1.1.3",
     "hapi": "^13.0.0",
     "joi": "^8.0.4",
     "lodash": "^4.5.1",
-    "mocha-lcov-reporter": "^1.2.0",
     "mongoose": "^4.4.2",
     "mongoose-sequence": "^1.0.0",
     "node-soundcloud": "0.0.5",
@@ -30,6 +31,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "mocha-istanbul": "^0.2.0"
+    "mocha-istanbul": "^0.2.0",
+    "codacy-coverage": "^1.1.3",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
