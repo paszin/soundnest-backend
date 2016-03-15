@@ -115,6 +115,20 @@ exports.register = function(server, options, next) {
 		}
 	});
 
+	server.route({
+		method: "DELETE",
+		path: "/groups/{gid}/tracks/{tid}",
+		handler: function(request, reply) {
+			Groups.update({
+				"id": request.params.gid
+			}, {
+				"$pull": {
+					"tracks" : {"$eq": request.params.tid}
+				}
+			}).then(reply().code(204));
+		}
+	});
+
 
 	//add a comment
 	server.route({

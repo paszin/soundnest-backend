@@ -164,3 +164,63 @@ describe("History", function() {
 		});
 	});
 });
+
+
+describe.only("Tracks in Groups", function() {
+	var options = {},
+		newgroup = {};
+
+	before(function(done) {
+		Groups.remove({});
+		Groups.remove(function() {});
+		Groups.add("Group 1", "describe this group", 100)
+			.then(function(group) {
+				newgroup.id = group.id;
+				done();
+			});
+	});
+
+	it("should add a track", function(done) {
+		options.url = "/groups/" + newgroup.id + "/tracks";
+		options.method = "POST";
+		options.payload = {"track_id": 1001, user_id: 100, comment: "so cool"};
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(201);
+			done();
+		});
+	});
+
+	it("should get the track", function(done) {
+		options.method = "GET";
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(200);
+			expect(response.result).to.have.property("tracks").with.length(1);
+			expect(response.result.tracks).to.be.a("array");
+			expect(response.result.tracks[0]).to.have.property("sn");
+			expect(response.result.tracks[0].sn.id).to.equal(1001);
+			expect(response.result.tracks[0].sn.added_by_id).to.equal(100);
+			expect(response.result.tracks[0].sn.comments).to.be.a("array").with.length(1);
+			expect(response.result.tracks[0].sn.comments[0]).to.have.property("text", "so cool");
+			expect(response.result.tracks[0].sn.comments[0]).to.have.property("author_id", 100);
+			done();
+		});
+	});
+
+
+	it("should delete the track", function(done) {
+		options.method = "DELETE";
+		options.url += "/1001"; //delete track 1001
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(204);
+			done();
+		});
+	});
+
+	it("should be deleted from the group", function(done) {
+		Groups.find({id: newgroup.id}).then(
+			function(groups) {
+				expect(groups[0].tracks).to.be.an("array").with.length(0);
+				done();
+			});
+	});
+});
