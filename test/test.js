@@ -7,20 +7,6 @@ var Invitations = require("../invitations/invitations-model.js");
 var History = require("../history/history-model.js");
 
 
-describe("Basics", function() {
-	it("responds with status code 200 and hello world text", function(done) {
-		var options = {
-			method: "GET",
-			url: "/"
-		};
-		server.server.inject(options, function(response) {
-			expect(response.statusCode).to.equal(200);
-			expect(response.result).to.equal('hello world');
-			done();
-		});
-	});
-});
-
 
 describe("create groups", function() {
 	var options = {};
@@ -127,7 +113,11 @@ describe("Invitation", function() {
 
 describe("History", function() {
 
-	before(function(done) {History.remove({}).then(function() {done()})});
+	before(function(done) {
+		History.remove({}).then(function() {
+			done()
+		})
+	});
 
 	var options = {};
 	options.url = "/history";
@@ -150,7 +140,7 @@ describe("History", function() {
 		});
 	});
 
-	it ("should return all tracks in the history", function(done) {
+	it("should return all tracks in the history", function(done) {
 		options.method = "GET";
 		options.payload = null;
 		options.url += "?user_id=100";

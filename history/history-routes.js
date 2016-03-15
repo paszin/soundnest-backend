@@ -3,11 +3,11 @@ SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
 });
 var async = require("async");
+const History = require("./history-model.js");
 
 
 exports.register = function(server, options, next) {
 
-	const History = require("./history-model.js");
 
 	server.route({
 		method: "GET",

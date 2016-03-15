@@ -146,7 +146,9 @@ exports.register = function(server, options, next) {
 					}
 				}
 			}).then(function(group) {
-				reply({group: group});
+				reply({
+					group: group
+				});
 			});
 		}
 	});
