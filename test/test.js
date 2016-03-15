@@ -156,7 +156,7 @@ describe("History", function() {
 });
 
 
-describe.only("Tracks in Groups", function() {
+describe("Tracks in Groups", function() {
 	var options = {},
 		newgroup = {};
 
