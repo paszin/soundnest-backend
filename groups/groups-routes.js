@@ -4,10 +4,10 @@ SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
 });
 
+const Groups = require("./groups-model.js");
+
 
 exports.register = function(server, options, next) {
-
-	const Groups = require("./groups-model.js");
 
 	//all groups
 	server.route({
@@ -128,7 +128,9 @@ exports.register = function(server, options, next) {
 				"id": request.params.gid
 			}, {
 				"$pull": {
-					"tracks" : {"$eq": request.params.tid}
+					"tracks": {
+						"$eq": request.params.tid
+					}
 				}
 			}).then(reply().code(204));
 		}

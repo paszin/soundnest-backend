@@ -29,7 +29,6 @@ historySchema.statics.add = function(user_id, track_id, statistics, play_status)
 };
 
 
-
 mongoose.model("History", historySchema);
 
 module.exports = mongoose.model("History");

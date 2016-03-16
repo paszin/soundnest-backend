@@ -10,12 +10,10 @@
     "test": "mocha --timeout 3000 --reporter nyan test",
     "start": "nodemon start_server.js",
     "dev": "nodemon start_server.js dev",
-    "coverage-serve":  "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
-    "coverage":  "istanbul --include-all-sources cover _mocha -- -R spec",
+    "coverage-serve": "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
+    "coverage": "istanbul --include-all-sources cover _mocha -- -R spec",
     "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter test",
     "test-watch": "mocha --timeout 3000 --reporter nyan test --watch --colors"
-
-
   },
   "author": "paszin",
   "license": "MIT",
@@ -23,7 +21,7 @@
     "async": "^1.5.2",
     "hapi": "^13.0.0",
     "joi": "^8.0.4",
-    "lodash": "^4.5.1",
+    "lodash": "^4.6.1",
     "mongoose": "^4.4.2",
     "mongoose-sequence": "^1.0.0",
     "node-soundcloud": "0.0.5",
