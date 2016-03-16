@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var AutoIncrement = require("mongoose-sequence");
+var _ = require("lodash");
 
 var groupsSchema = new mongoose.Schema({
 	name: String,
@@ -74,6 +75,11 @@ groupsSchema.methods.addMember = function(user_id) {
 		id: user_id
 	});
 	return this.save();
+};
+
+groupsSchema.methods.hasTrack = function(track_id) {
+	//console.log(_.find(this.tracks, {id: track_id}));
+	return this.tracks.length !== 0 && _.find(this.tracks, {id: track_id}).length !== 0;
 };
 
 

@@ -180,6 +180,17 @@ describe("Tracks in Groups", function() {
 		});
 	});
 
+	it("should not add the same track again", function(done) {
+		options.url = "/groups/" + newgroup.id + "/tracks";
+		options.method = "POST";
+		options.payload = {"track_id": 1001, user_id: 100, comment: "so cool2"};
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(204);
+			done();
+		});
+	});
+
+
 	it("should get the track", function(done) {
 		options.method = "GET";
 		server.server.inject(options, function(response) {

@@ -80,8 +80,13 @@ exports.register = function(server, options, next) {
 				id: request.params.id
 			}).then(
 				function(group) {
-					group.addTrack(request.payload.track_id, request.payload.user_id, request.payload.comment)
-						.then(reply().code(201));
+					if (group.hasTrack(request.payload.track_id)) {
+						//TODO add comment anyway
+						reply().code(204);
+					} else {
+						group.addTrack(request.payload.track_id, request.payload.user_id, request.payload.comment)
+							.then(reply().code(201));
+					}
 				});
 		}
 	});
