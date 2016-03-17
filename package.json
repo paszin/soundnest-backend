@@ -13,7 +13,8 @@
     "coverage-serve": "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
     "coverage": "istanbul --include-all-sources cover _mocha -- -R spec",
     "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter test",
-    "test-watch": "mocha --timeout 3000 --reporter nyan test --watch --colors"
+    "test-watch": "mocha --timeout 3000 --reporter nyan test --watch --colors",
+    "docs": "apidoc -o apidoc/ "
   },
   "author": "paszin",
   "license": "MIT",
