@@ -236,7 +236,7 @@ describe("Tracks in Groups", function() {
 	});
 });
 
-/*
+
 describe("Comments for Tracks", function() {
 
 	var options = {},
