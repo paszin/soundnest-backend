@@ -9,7 +9,20 @@ const Groups = require("./groups-model.js");
 
 exports.register = function(server, options, next) {
 
-	//all groups
+
+/* ___ ___  ___  _   _ ___  ___
+  / __| _ \/ _ \| | | | _ \/ __|
+ | (_ |   / (_) | |_| |  _/\__ \
+  \___|_|_\\___/ \___/|_|  |___/+/
+/**
+ * @api {get} /groups All Groups a user belongs to
+ * @apiName GetGroups
+ * @apiGroup Groups
+ *
+ * @apiParam {Number} user_id
+ *
+ */
+
 	server.route({
 		method: "GET",
 		path: "/groups",
@@ -26,7 +39,16 @@ exports.register = function(server, options, next) {
 	});
 
 
-	// add new group
+/**
+ * @api {post} /groups add a new group
+ * @apiName AddGroup
+ * @apiGroup Groups
+ *
+ * @apiParam {Number} user_id
+ * @apiParam {Number} name
+ * @apiParam {Number} description
+ *
+ */
 	server.route({
 		method: "POST",
 		path: "/groups",
@@ -40,8 +62,19 @@ exports.register = function(server, options, next) {
 		}
 	});
 
-
-	// get tracklist
+/*_____ ___    _   ___ _  _____
+ |_   _| _ \  /_\ / __| |/ / __|
+   | | |   / / _ \ (__| ' <\__ \
+   |_| |_|_\/_/ \_\___|_|\_\___/
+ */
+	/**
+ * @api {get} /groups/:id/tracks All Tracks of the Group
+ * @apiName Tracks
+ * @apiGroup Group_Tracks
+ *
+ * @apiParam {Number} id
+ *
+ */
 	server.route({
 		method: "GET",
 		path: "/groups/{id}/tracks",
@@ -70,8 +103,7 @@ exports.register = function(server, options, next) {
 		}
 	});
 
-
-	// add a track
+	//ADD
 	server.route({
 		method: "POST",
 		path: "/groups/{id}/tracks",
@@ -137,7 +169,11 @@ exports.register = function(server, options, next) {
 	});
 
 
-	//add a comment
+/* ___ ___  __  __ __  __ ___ _  _ _____ ___
+  / __/ _ \|  \/  |  \/  | __| \| |_   _/ __|
+ | (_| (_) | |\/| | |\/| | _|| .` | | | \__ \
+  \___\___/|_|  |_|_|  |_|___|_|\_| |_| |___/
+  */
 	server.route({
 		method: "POST",
 		path: "/groups/{gid}/tracks/{tid}/comments",
@@ -160,6 +196,12 @@ exports.register = function(server, options, next) {
 		}
 	});
 
+/*__  __ ___ __  __ ___ ___ ___  ___
+ |  \/  | __|  \/  | _ ) __| _ \/ __|
+ | |\/| | _|| |\/| | _ \ _||   /\__ \
+ |_|  |_|___|_|  |_|___/___|_|_\|___/
+*/
+
 	server.route({
 		method: "POST",
 		path: "/groups/{gid}/members",
@@ -180,3 +222,5 @@ exports.register = function(server, options, next) {
 exports.register.attributes = {
 	name: "groups"
 };
+
+//http://patorjk.com/software/taag/#p=display&f=Small&t=DOC
