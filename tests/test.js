@@ -12,8 +12,8 @@ describe("create groups", function() {
 	var options = {};
 	options.url = "/groups";
 
-	before(function() {
-		Groups.remove(function() {});
+	before(function(done) {
+		Groups.remove(function() {}).then(() => done());
 	});
 
 	it("should create a new group", function(done) {
@@ -240,21 +240,45 @@ describe("Tracks in Groups", function() {
 describe("Comments for Tracks", function() {
 
 	var options = {},
-		newgroup;
+		newgroup = {};
 
 	before(function(done) {
-		Groups.remove(function() {})
-			.then(Groups.add("Group 1", "describe this group", 100))
+		Groups.remove({}, function() {})
+			.then(() => Groups.add("Group 1", "describe this group", 100)) //add group
 			.then(function(group) {
 				newgroup.id = group.id;
+				//console.log("new group", newgroup);
+				return group;
+			})
+			.then((group) => group.addTrack(1001, 100, "so cool1")) //add track
+			.then(function() {
+			//console.log("call done in before");
 				done();
 			});
 	});
 
 
-	it("#should add a comment to a track", function(done) {
-		options.url = "groups/" + newgroup.id + "/comments";
+	it("should add a comment to a track", function(done) {
+		options.url = "/groups/" + newgroup.id + "/tracks/" + 1001 + "/comments";
 		options.method = "POST";
-		done();
+		options.payload = {
+			user_id: 100,
+			text: "so cool2"
+		};
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(201);
+			done();
+		});
 	});
-})*/
+
+	it("should appear in the database", function(done) {
+		Groups.find({
+				id: newgroup.id
+			}).then(function(groups) {
+				expect(groups[0].tracks[0].comments).to.be.an("array").with.length(2);
+				expect(groups[0].tracks[0].comments[0]).to.have.property("text", "so cool1");
+				expect(groups[0].tracks[0].comments[1]).to.have.property("text", "so cool2");
+				done();
+			});
+		});
+});

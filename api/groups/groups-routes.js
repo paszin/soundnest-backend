@@ -3,6 +3,7 @@ var SC = require("node-soundcloud");
 SC.init({
 	id: "8cc5ee91d9e6015109dc93302c43e99c"
 });
+var Joi = require("joi");
 
 const Groups = require("./groups-model.js");
 
