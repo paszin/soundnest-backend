@@ -7,14 +7,14 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "test": "mocha --timeout 3000 --reporter nyan test",
-    "start": "nodemon start_server.js",
-    "dev": "nodemon start_server.js dev",
+    "test": "mocha --timeout 3000 --reporter nyan tests",
+    "start": "nodemon ./api/start_server.js",
+    "dev": "nodemon ./api/start_server.js dev",
     "coverage-serve": "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
     "coverage": "istanbul --include-all-sources cover _mocha -- -R spec",
-    "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter test",
-    "test-watch": "mocha --timeout 3000 --reporter nyan test --watch --colors",
-    "docs": "apidoc -o apidoc/ "
+    "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter tests",
+    "test-watch": "mocha --timeout 3000 --reporter nyan tests --watch --colors",
+    "docs": "apidoc -i api -o apidoc/ "
   },
   "author": "paszin",
   "license": "MIT",
@@ -31,9 +31,9 @@
   "devDependencies": {
     "apidoc": "^0.15.1",
     "chai": "^3.5.0",
+    "codacy-coverage": "^1.1.3",
     "mocha": "^2.4.5",
     "mocha-istanbul": "^0.2.0",
-    "codacy-coverage": "^1.1.3",
     "mocha-lcov-reporter": "^1.2.0"
   }
 }

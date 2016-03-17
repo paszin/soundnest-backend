@@ -1,10 +1,10 @@
 /*global describe, it*/
 var expect = require("chai").expect;
-var server = require("../server.js");
+var server = require("../api/server.js");
 server.startServer("soundnest-test");
-var Groups = require("../groups/groups-model.js");
-var Invitations = require("../invitations/invitations-model.js");
-var History = require("../history/history-model.js");
+var Groups = require("../api/groups/groups-model.js");
+var Invitations = require("../api/invitations/invitations-model.js");
+var History = require("../api/history/history-model.js");
 
 
 
@@ -173,7 +173,11 @@ describe("Tracks in Groups", function() {
 	it("should add a track", function(done) {
 		options.url = "/groups/" + newgroup.id + "/tracks";
 		options.method = "POST";
-		options.payload = {"track_id": 1001, user_id: 100, comment: "so cool"};
+		options.payload = {
+			"track_id": 1001,
+			user_id: 100,
+			comment: "so cool"
+		};
 		server.server.inject(options, function(response) {
 			expect(response.statusCode).to.equal(201);
 			done();
@@ -183,7 +187,11 @@ describe("Tracks in Groups", function() {
 	it("should not add the same track again", function(done) {
 		options.url = "/groups/" + newgroup.id + "/tracks";
 		options.method = "POST";
-		options.payload = {"track_id": 1001, user_id: 100, comment: "so cool2"};
+		options.payload = {
+			"track_id": 1001,
+			user_id: 100,
+			comment: "so cool2"
+		};
 		server.server.inject(options, function(response) {
 			expect(response.statusCode).to.equal(204);
 			done();
@@ -218,10 +226,35 @@ describe("Tracks in Groups", function() {
 	});
 
 	it("should be deleted from the group", function(done) {
-		Groups.find({id: newgroup.id}).then(
+		Groups.find({
+			id: newgroup.id
+		}).then(
 			function(groups) {
 				expect(groups[0].tracks).to.be.an("array").with.length(0);
 				done();
 			});
 	});
 });
+
+/*
+describe("Comments for Tracks", function() {
+
+	var options = {},
+		newgroup;
+
+	before(function(done) {
+		Groups.remove(function() {})
+			.then(Groups.add("Group 1", "describe this group", 100))
+			.then(function(group) {
+				newgroup.id = group.id;
+				done();
+			});
+	});
+
+
+	it("#should add a comment to a track", function(done) {
+		options.url = "groups/" + newgroup.id + "/comments";
+		options.method = "POST";
+		done();
+	});
+})*/
