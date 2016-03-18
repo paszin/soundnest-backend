@@ -2,7 +2,7 @@ verbose: false
 instrumentation:
     root: .
     default-excludes: true
-    excludes: []
+    excludes: ["api/start_server.js"]
     embed-source: false
     variable: __coverage__
     compact: true
@@ -23,4 +23,4 @@ reporting:
         branches: [50, 80]
 hooks:
     hook-run-in-context: false
-    post-require-hook: null
+    post-require-hook: npm run report-coverage

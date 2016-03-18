@@ -165,7 +165,7 @@ describe("Tracks in History", function() {
 });
 
 
-describe.only("Many Tracks in History", function() {
+describe("Many Tracks in History", function() {
 	before(function(done) {
 		var docs = [],
 			currentTimestamp = Date.now(),
