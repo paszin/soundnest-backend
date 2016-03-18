@@ -1,4 +1,4 @@
-var server = require("./server.js")
+var server = require("./server.js");
 var databse = "soundnest";
 if (process.argv[2]) {
 	databse += "-" + process.argv[2];

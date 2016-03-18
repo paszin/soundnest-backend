@@ -1,4 +1,4 @@
-/*global describe, it*/
+/*global describe, it, before*/
 var expect = require("chai").expect;
 var server = require("../api/server.js");
 server.startServer("soundnest-test");
@@ -107,7 +107,7 @@ describe("Invitation", function() {
 			expect(groups[0]).to.have.property("id", newgroup.id);
 			done();
 		});
-	})
+	});
 });
 
 
@@ -115,7 +115,7 @@ describe("History", function() {
 
 	before(function(done) {
 		History.remove({}).then(function() {
-			done()
+			done();
 		})
 	});
 
