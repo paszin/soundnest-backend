@@ -14,7 +14,8 @@
     "coverage": "istanbul --include-all-sources cover _mocha -- -R spec",
     "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter tests",
     "test-watch": "mocha --timeout 3000 --reporter nyan tests --watch --colors",
-    "docs": "apidoc -i api -o apidoc/ "
+    "docs": "apidoc -i api -o apidoc/",
+    "report-coverage": "./node_modules/.bin/codacy-coverage < ./coverage/lcov.info"
   },
   "author": "paszin",
   "license": "MIT",
@@ -24,6 +25,7 @@
     "joi": "^8.0.4",
     "lodash": "^4.6.1",
     "mongoose": "^4.4.2",
+    "mongoose-paginate": "^5.0.0",
     "mongoose-sequence": "^1.0.0",
     "node-soundcloud": "0.0.5",
     "request": "^2.69.0"
