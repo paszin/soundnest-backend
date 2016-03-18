@@ -78,8 +78,12 @@ groupsSchema.methods.addMember = function(user_id) {
 };
 
 groupsSchema.methods.hasTrack = function(track_id) {
-	//console.log(_.find(this.tracks, {id: track_id}));
-	return this.tracks.length !== 0 && _.find(this.tracks, {id: track_id}).length !== 0;
+	for (var i = 0; i < this.tracks.length; i++) {
+		if (this.tracks[i].id === track_id) {
+			return true;
+		}
+	}
+	return false;
 };
 
 

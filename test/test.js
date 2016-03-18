@@ -227,7 +227,7 @@ describe("Tracks in Groups", function() {
 		options.url = "/groups/" + newgroup.id + "/tracks";
 		options.method = "POST";
 		options.payload = {
-			"track_id": 1001,
+			track_id: 162069768,
 			user_id: 100,
 			comment: "so cool"
 		};
@@ -241,7 +241,7 @@ describe("Tracks in Groups", function() {
 		options.url = "/groups/" + newgroup.id + "/tracks";
 		options.method = "POST";
 		options.payload = {
-			"track_id": 1001,
+			track_id: 162069768,
 			user_id: 100,
 			comment: "so cool2"
 		};
@@ -251,15 +251,29 @@ describe("Tracks in Groups", function() {
 		});
 	});
 
+	it("should add another track", function(done) {
+		options.url = "/groups/" + newgroup.id + "/tracks";
+		options.method = "POST";
+		options.payload = {
+			track_id: 202258750,
+			user_id: 100,
+			comment: "so cool, too"
+		};
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(201);
+			done();
+		});
+	});
 
-	it("should get the track", function(done) {
+	it("should get the tracks", function(done) {
 		options.method = "GET";
 		server.server.inject(options, function(response) {
 			expect(response.statusCode).to.equal(200);
-			expect(response.result).to.have.property("tracks").with.length(1);
-			expect(response.result.tracks).to.be.a("array");
+			expect(response.result).to.have.property("tracks").with.length(2);
+			expect(response.result.tracks).to.be.an("array");
 			expect(response.result.tracks[0]).to.have.property("sn");
-			expect(response.result.tracks[0].sn.id).to.equal(1001);
+			expect(response.result.tracks[0].sn.id).to.equal(162069768);
+			expect(response.result.tracks[1].sn.id).to.equal(202258750);
 			expect(response.result.tracks[0].sn.added_by_id).to.equal(100);
 			expect(response.result.tracks[0].sn.comments).to.be.a("array").with.length(1);
 			expect(response.result.tracks[0].sn.comments[0]).to.have.property("text", "so cool");
@@ -300,12 +314,10 @@ describe("Comments for Tracks", function() {
 			.then(() => Groups.add("Group 1", "describe this group", 100)) //add group
 		.then(function(group) {
 			newgroup.id = group.id;
-			//console.log("new group", newgroup);
 			return group;
 		})
 			.then((group) => group.addTrack(1001, 100, "so cool1")) //add track
 		.then(function() {
-			//console.log("call done in before");
 			done();
 		});
 	});
