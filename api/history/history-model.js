@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var mongoosePaginate = require("mongoose-paginate");
+
 
 var historySchema = new mongoose.Schema({
 	user_id: Number,
@@ -13,6 +15,7 @@ var historySchema = new mongoose.Schema({
 	play_status: Number //0 for not played (just collecting data) 1 for played completly
 });
 
+historySchema.plugin(mongoosePaginate);
 
 // add a track to history
 historySchema.statics.add = function(user_id, track_id, statistics, play_status) {

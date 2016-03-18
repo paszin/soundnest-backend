@@ -111,13 +111,20 @@ describe("Invitation", function() {
 });
 
 
-describe("History", function() {
+describe("Tracks in History", function() {
 
 	before(function(done) {
 		History.remove({}).then(function() {
 			done();
-		})
+		});
 	});
+
+	after(function(done) {
+		History.remove({}).then(function() {
+			done();
+		});
+	});
+
 
 	var options = {};
 	options.url = "/history";
@@ -150,10 +157,56 @@ describe("History", function() {
 			expect(response.result.tracks).to.be.a("array");
 			expect(response.result.tracks[0]).to.have.property("sn");
 			expect(response.result.tracks[0].sn.track_id).to.equal(1001);
+			//pagination
+			expect(response.result.total).to.equal(1);
 			done();
 		});
 	});
 });
+
+
+describe("Many Tracks in History", function() {
+	before(function(done) {
+		var docs = [],
+			currentTimestamp = Date.now(),
+			user_id, track_id;
+		for (user_id = 1; user_id <= 2; user_id += 1) {
+			for (track_id = 1001; track_id <= 1090; track_id += 1) {
+				currentTimestamp += 100;
+				docs.push({
+					user_id: user_id,
+					track_id: 202258750,
+					timestamp: currentTimestamp,
+					comment_count: 4,
+					playback_count: 4000,
+					favoritings_count: 40,
+					play_status: 1
+				});
+			}
+		}
+		History.remove({}).then(function() {
+			History.collection.insert(docs, function() {
+				History.find({}).then(
+					function(data) {
+						done();
+					});
+			});
+		});
+	});
+
+	it("should return the latest 20 tracks from the history", function(done) {
+		var options = {};
+		options.url = "/history?user_id=1";
+		options.method = "GET";
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(200);
+			expect(response.result).to.have.property("tracks").with.length(20);
+			expect(response.result.total).to.equal(90);
+			done();
+		});
+	});
+});
+
 
 
 describe("Tracks in Groups", function() {
@@ -245,16 +298,16 @@ describe("Comments for Tracks", function() {
 	before(function(done) {
 		Groups.remove({}, function() {})
 			.then(() => Groups.add("Group 1", "describe this group", 100)) //add group
-			.then(function(group) {
-				newgroup.id = group.id;
-				//console.log("new group", newgroup);
-				return group;
-			})
+		.then(function(group) {
+			newgroup.id = group.id;
+			//console.log("new group", newgroup);
+			return group;
+		})
 			.then((group) => group.addTrack(1001, 100, "so cool1")) //add track
-			.then(function() {
+		.then(function() {
 			//console.log("call done in before");
-				done();
-			});
+			done();
+		});
 	});
 
 
@@ -273,12 +326,12 @@ describe("Comments for Tracks", function() {
 
 	it("should appear in the database", function(done) {
 		Groups.find({
-				id: newgroup.id
-			}).then(function(groups) {
-				expect(groups[0].tracks[0].comments).to.be.an("array").with.length(2);
-				expect(groups[0].tracks[0].comments[0]).to.have.property("text", "so cool1");
-				expect(groups[0].tracks[0].comments[1]).to.have.property("text", "so cool2");
-				done();
-			});
+			id: newgroup.id
+		}).then(function(groups) {
+			expect(groups[0].tracks[0].comments).to.be.an("array").with.length(2);
+			expect(groups[0].tracks[0].comments[0]).to.have.property("text", "so cool1");
+			expect(groups[0].tracks[0].comments[1]).to.have.property("text", "so cool2");
+			done();
 		});
+	});
 });
