@@ -7,12 +7,11 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "test": "mocha --timeout 3000 --reporter nyan tests",
+    "test": "mocha --timeout 3000 --reporter nyan test",
     "start": "nodemon ./api/start_server.js",
     "dev": "nodemon ./api/start_server.js dev",
     "coverage-serve": "istanbul --include-all-sources cover _mocha -- -R spec; static coverage/lcov-report -a 0.0.0.0",
     "coverage": "istanbul --include-all-sources cover _mocha -- -R spec",
-    "codacy": "mocha --timeout 3000 --reporter mocha-lcov-reporter tests",
     "test-watch": "mocha --timeout 3000 --reporter nyan tests --watch --colors",
     "docs": "apidoc -i api -o apidoc/",
     "report-coverage": "./node_modules/.bin/codacy-coverage < ./coverage/lcov.info"
