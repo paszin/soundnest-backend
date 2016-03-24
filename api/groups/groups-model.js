@@ -88,7 +88,7 @@ groupsSchema.methods.hasTrack = function(track_id) {
 
 groupsSchema.methods.deleteMember = function(id) {
 	 //_.pullAllBy(this.members, [{"id": id}], "id");
-	 this.members = this.members.filter((member) => member.id !== id);
+	 this.members = this.members.filter((member) => member.id !== parseInt(id));
 	 return this.save();
 };
 

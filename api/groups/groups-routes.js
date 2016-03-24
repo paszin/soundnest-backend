@@ -195,9 +195,13 @@ exports.register = function(server, options, next) {
 		method: "DELETE",
 		path: "/groups/{id}/members/{mid}",
 		handler: function(request, reply) {
-			Groups.findOne({id: request.params.id}).then(
+			Groups.findOne({
+				id: request.params.id
+			}).then(
 				function(group) {
 					group.deleteMember(request.params.mid);
+				}).then(
+				function() {
 					reply().code(204);
 				});
 		}

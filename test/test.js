@@ -390,7 +390,7 @@ describe("Members in Group", function() {
 				id: newgroup.id
 			}).then(
 				function(group) {
-					expect(group.members).to.be.an("array").with.length(1);
+					expect(group.members).to.be.an("array").with.length(0);
 					done();
 				}
 			);
