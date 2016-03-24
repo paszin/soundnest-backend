@@ -126,6 +126,43 @@ exports.register = function(server, options, next) {
 	});
 
 	server.route({
+		method: "DELETE",
+		path: "/groups/{gid}/tracks/{tid}",
+		handler: function(request, reply) {
+			Groups.update({
+				"id": request.params.gid
+			}, {
+				"$pull": {
+					"tracks": {
+						"$eq": request.params.tid
+					}
+				}
+			}).then(reply().code(204));
+		}
+	});
+
+	/*__  __ ___ __  __ ___ ___ ___  ___
+	 |  \/  | __|  \/  | _ ) __| _ \/ __|
+	 | |\/| | _|| |\/| | _ \ _||   /\__ \
+	 |_|  |_|___|_|  |_|___/___|_|_\|___/
+	*/
+
+/*	server.route({
+		method: "POST",
+		path: "/groups/{gid}/members",
+		handler: function(request, reply) {
+			Groups.findOne({
+					id: request.query.gid
+				}).then(function(group) {
+					return group.addMember(request.payload.user_id);
+				})
+				.then(reply().code(201));
+		}
+	});
+*/
+
+
+	server.route({
 		method: "GET",
 		path: "/groups/{id}/members",
 		handler: function(request, reply) {
@@ -156,19 +193,16 @@ exports.register = function(server, options, next) {
 
 	server.route({
 		method: "DELETE",
-		path: "/groups/{gid}/tracks/{tid}",
+		path: "/groups/{id}/members/{mid}",
 		handler: function(request, reply) {
-			Groups.update({
-				"id": request.params.gid
-			}, {
-				"$pull": {
-					"tracks": {
-						"$eq": request.params.tid
-					}
-				}
-			}).then(reply().code(204));
+			Groups.findOne({id: request.params.id}).then(
+				function(group) {
+					group.deleteMember(request.params.mid);
+					reply().code(204);
+				});
 		}
 	});
+
 
 
 	/* ___ ___  __  __ __  __ ___ _  _ _____ ___
@@ -201,25 +235,6 @@ exports.register = function(server, options, next) {
 					user_id: Joi.number().required()
 				}
 			}
-		}
-	});
-
-	/*__  __ ___ __  __ ___ ___ ___  ___
-	 |  \/  | __|  \/  | _ ) __| _ \/ __|
-	 | |\/| | _|| |\/| | _ \ _||   /\__ \
-	 |_|  |_|___|_|  |_|___/___|_|_\|___/
-	*/
-
-	server.route({
-		method: "POST",
-		path: "/groups/{gid}/members",
-		handler: function(request, reply) {
-			Groups.findOne({
-					id: request.query.gid
-				}).then(function(group) {
-					return group.addMember(request.payload.user_id);
-				})
-				.then(reply().code(201));
 		}
 	});
 

@@ -86,7 +86,11 @@ groupsSchema.methods.hasTrack = function(track_id) {
 	return false;
 };
 
-
+groupsSchema.methods.deleteMember = function(id) {
+	 //_.pullAllBy(this.members, [{"id": id}], "id");
+	 this.members = this.members.filter((member) => member.id !== id);
+	 return this.save();
+};
 
 mongoose.model("Groups", groupsSchema);
 

@@ -5,7 +5,7 @@ server.startServer("soundnest-test");
 var Groups = require("../api/groups/groups-model.js");
 var Invitations = require("../api/invitations/invitations-model.js");
 var History = require("../api/history/history-model.js");
-
+var helpers = require("./helpers.js");
 
 
 describe("create groups", function() {
@@ -345,5 +345,56 @@ describe("Comments for Tracks", function() {
 			expect(groups[0].tracks[0].comments[1]).to.have.property("text", "so cool2");
 			done();
 		});
+	});
+});
+
+
+describe("Members in Group", function() {
+	options = {};
+	before(function(done) {
+		//create a group
+		newgroup = {};
+		helpers.createGroup({added_by: 1}, function(data) {
+			newgroup.id = data.id;
+			done();
+		});
+	});
+
+/*	it("should add a member", function(done) {
+		options.method = "POST";
+		options.url = helpers.buildPath("groups", newgroup.id, "members");
+		options.payload = {
+			user_id: 100
+		};
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(201);
+			Groups.findOne({
+				id: newgroup.id
+			}).then(
+				function(group) {
+					expect(group.members).to.be.an("array").with.length(1);
+					//expect(groups[0].members[1]).to.have.property("id", 100);
+					done();
+				}
+			);
+		});
+	});
+*/
+
+	it("should delete a member", function(done) {
+		options.method = "DELETE";
+		options.url = helpers.buildPath("groups", newgroup.id, "members", 1);
+		server.server.inject(options, function(response) {
+			expect(response.statusCode).to.equal(204);
+			Groups.findOne({
+				id: newgroup.id
+			}).then(
+				function(group) {
+					expect(group.members).to.be.an("array").with.length(1);
+					done();
+				}
+			);
+		});
+
 	});
 });
