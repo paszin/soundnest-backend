@@ -13,4 +13,4 @@ exports.createGroup = function (data, callback) {
 
 exports.buildPath = function() {
 	return "/" + _.values(arguments).join("/");
-}
+};

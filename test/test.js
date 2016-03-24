@@ -1,4 +1,4 @@
-/*global describe, it, before*/
+/*global describe, it, before, after*/
 var expect = require("chai").expect;
 var server = require("../api/server.js");
 server.startServer("soundnest-test");
@@ -187,7 +187,7 @@ describe("Many Tracks in History", function() {
 		History.remove({}).then(function() {
 			History.collection.insert(docs, function() {
 				History.find({}).then(
-					function(data) {
+					function() {
 						done();
 					});
 			});
@@ -350,7 +350,8 @@ describe("Comments for Tracks", function() {
 
 
 describe("Members in Group", function() {
-	options = {};
+	var options = {},
+	    newgroup = {};
 	before(function(done) {
 		//create a group
 		newgroup = {};

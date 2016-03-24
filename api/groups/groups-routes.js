@@ -147,19 +147,19 @@ exports.register = function(server, options, next) {
 	 |_|  |_|___|_|  |_|___/___|_|_\|___/
 	*/
 
-/*	server.route({
-		method: "POST",
-		path: "/groups/{gid}/members",
-		handler: function(request, reply) {
-			Groups.findOne({
-					id: request.query.gid
-				}).then(function(group) {
-					return group.addMember(request.payload.user_id);
-				})
-				.then(reply().code(201));
-		}
-	});
-*/
+	/*	server.route({
+			method: "POST",
+			path: "/groups/{gid}/members",
+			handler: function(request, reply) {
+				Groups.findOne({
+						id: request.query.gid
+					}).then(function(group) {
+						return group.addMember(request.payload.user_id);
+					})
+					.then(reply().code(201));
+			}
+		});
+	*/
 
 
 	server.route({
@@ -228,7 +228,7 @@ exports.register = function(server, options, next) {
 						"author_id": request.payload.user_id
 					}
 				}
-			}).then(function(group) {
+			}).then(function() {
 				reply().code(201);
 			});
 		},
